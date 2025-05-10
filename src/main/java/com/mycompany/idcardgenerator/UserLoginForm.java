@@ -33,15 +33,17 @@ public class UserLoginForm extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         _loginPassword = new javax.swing.JPasswordField();
         Register_btn = new javax.swing.JButton();
+        Login_btn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Login");
 
-        jLabel1.setFont(new java.awt.Font("Montserrat", 1, 24)); // NOI18N
         jLabel1.setText("Login Form");
+        jLabel1.setFont(new java.awt.Font("Montserrat", 1, 24)); // NOI18N
 
+        jLabel2.setText("Username");
         jLabel2.setFont(new java.awt.Font("Open Sans", 0, 16)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel2.setText("Username");
 
         _loginName.setFont(new java.awt.Font("Montserrat Medium", 0, 18)); // NOI18N
         _loginName.setHorizontalAlignment(javax.swing.JTextField.LEFT);
@@ -54,9 +56,9 @@ public class UserLoginForm extends javax.swing.JFrame {
             }
         });
 
+        jLabel3.setText("Password");
         jLabel3.setFont(new java.awt.Font("Open Sans", 0, 16)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel3.setText("Password");
 
         _loginPassword.setFont(new java.awt.Font("Open Sans SemiBold", 1, 14)); // NOI18N
         _loginPassword.addActionListener(new java.awt.event.ActionListener() {
@@ -65,14 +67,23 @@ public class UserLoginForm extends javax.swing.JFrame {
             }
         });
 
+        Register_btn.setText("Log In");
         Register_btn.setBackground(new java.awt.Color(0, 153, 255));
         Register_btn.setFont(new java.awt.Font("Open Sans SemiBold", 1, 24)); // NOI18N
         Register_btn.setForeground(new java.awt.Color(255, 255, 255));
-        Register_btn.setText("Login");
-        Register_btn.setActionCommand("Login");
         Register_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Register_btnActionPerformed(evt);
+            }
+        });
+
+        Login_btn.setBackground(new java.awt.Color(0, 153, 255));
+        Login_btn.setFont(new java.awt.Font("Open Sans SemiBold", 1, 24)); // NOI18N
+        Login_btn.setForeground(new java.awt.Color(255, 255, 255));
+        Login_btn.setText("REGISTER");
+        Login_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Login_btnActionPerformed(evt);
             }
         });
 
@@ -88,15 +99,16 @@ public class UserLoginForm extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(109, 109, 109)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Register_btn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(_loginName)
                                 .addComponent(_loginPassword)
                                 .addGroup(layout.createSequentialGroup()
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel2)
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(jLabel3))
-                                    .addGap(265, 265, 265))))))
+                                    .addGap(265, 265, 265)))
+                            .addComponent(Login_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Register_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(110, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -104,7 +116,7 @@ public class UserLoginForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(jLabel1)
-                .addGap(47, 47, 47)
+                .addGap(32, 32, 32)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(_loginName, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -112,9 +124,11 @@ public class UserLoginForm extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(_loginPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(58, 58, 58)
+                .addGap(30, 30, 30)
+                .addComponent(Login_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(Register_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         pack();
@@ -140,8 +154,15 @@ public class UserLoginForm extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Login successful as " + role);
                 this.dispose();
                 
-                DetailsForm _detailsForm = new DetailsForm();
+                if (role.equals("admin")) {
+                    AdminPanelForm _adminForm = new AdminPanelForm();
+                    _adminForm.setVisible(true);
+                }
+                else { 
+                 DetailsForm _detailsForm = new DetailsForm();
                 _detailsForm.setVisible(true);
+                }
+               
                 
             } else {
                 JOptionPane.showMessageDialog(this, "Invalid credentials", "Error", JOptionPane.ERROR_MESSAGE);
@@ -154,6 +175,12 @@ public class UserLoginForm extends javax.swing.JFrame {
     private void _loginPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event__loginPasswordActionPerformed
         
     }//GEN-LAST:event__loginPasswordActionPerformed
+
+    private void Login_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Login_btnActionPerformed
+        this.dispose();
+        UserRegisterForm _registrationform = new UserRegisterForm();
+        _registrationform.setVisible(true);
+    }//GEN-LAST:event_Login_btnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -191,6 +218,7 @@ public class UserLoginForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Login_btn;
     private javax.swing.JButton Register_btn;
     private javax.swing.JTextField _loginName;
     private javax.swing.JPasswordField _loginPassword;

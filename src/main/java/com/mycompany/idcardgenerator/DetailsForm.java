@@ -64,6 +64,7 @@ public class DetailsForm extends javax.swing.JFrame {
         _program = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Details");
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -208,8 +209,8 @@ public class DetailsForm extends javax.swing.JFrame {
 
         datePicker1.setFont(new java.awt.Font("Open Sans SemiBold", 0, 14)); // NOI18N
 
-        _program.setFont(new java.awt.Font("Open Sans SemiBold", 0, 14)); // NOI18N
         _program.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "BIT", "BCA", "CIVIL", "MANAGEMENT" }));
+        _program.setFont(new java.awt.Font("Open Sans SemiBold", 0, 14)); // NOI18N
         _program.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 _programActionPerformed(evt);
@@ -254,9 +255,7 @@ public class DetailsForm extends javax.swing.JFrame {
                                         .addComponent(_emailError))
                                     .addGap(95, 95, 95)
                                     .addGroup(parent_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(parent_PanelLayout.createSequentialGroup()
-                                            .addComponent(jLabel7)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(jLabel7)
                                         .addGroup(parent_PanelLayout.createSequentialGroup()
                                             .addComponent(_stateError)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)

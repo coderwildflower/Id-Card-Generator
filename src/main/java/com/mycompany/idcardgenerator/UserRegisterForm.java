@@ -38,6 +38,7 @@ public class UserRegisterForm extends javax.swing.JFrame {
         _registerPassword = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Registration");
 
         jLabel2.setFont(new java.awt.Font("Open Sans", 0, 16)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(153, 153, 153));
