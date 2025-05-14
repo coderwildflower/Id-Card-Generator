@@ -112,10 +112,13 @@
                                       <EmptySpace min="-2" pref="95" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
-                                          <Group type="102" alignment="0" attributes="0">
+                                          <Group type="102" alignment="1" attributes="0">
                                               <Component id="_stateError" min="-2" max="-2" attributes="0"/>
                                               <EmptySpace max="32767" attributes="0"/>
-                                              <Component id="_program" min="-2" pref="161" max="-2" attributes="0"/>
+                                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                                  <Component id="chooseImgBtn" max="32767" attributes="0"/>
+                                                  <Component id="_program" pref="161" max="32767" attributes="0"/>
+                                              </Group>
                                               <EmptySpace min="-2" pref="211" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
@@ -198,7 +201,10 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="_phoneNumber" min="-2" pref="51" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="_phoneNumber" alignment="3" min="-2" pref="51" max="-2" attributes="0"/>
+                      <Component id="chooseImgBtn" alignment="3" min="-2" pref="51" max="-2" attributes="0"/>
+                  </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="_phoneError" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
@@ -584,6 +590,18 @@
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
+        </Component>
+        <Component class="javax.swing.JButton" name="chooseImgBtn">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Open Sans SemiBold" size="12" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Select Image"/>
+            <Property name="horizontalAlignment" type="int" value="2"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chooseImgBtnActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

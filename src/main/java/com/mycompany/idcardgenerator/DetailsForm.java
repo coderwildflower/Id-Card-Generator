@@ -5,11 +5,16 @@
 package com.mycompany.idcardgenerator;
 
 import com.github.lgooddatepicker.components.DatePickerSettings;
+import java.io.File;
+import java.nio.file.Files;
+import java.io.IOException;
 import javax.swing.JOptionPane;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 /**
  *
  * @author Prashant PC
@@ -62,6 +67,7 @@ public class DetailsForm extends javax.swing.JFrame {
         _bloodGrouplist = new javax.swing.JComboBox<>();
         datePicker1 = new com.github.lgooddatepicker.components.DatePicker();
         _program = new javax.swing.JComboBox<>();
+        chooseImgBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Details");
@@ -217,6 +223,15 @@ public class DetailsForm extends javax.swing.JFrame {
             }
         });
 
+        chooseImgBtn.setFont(new java.awt.Font("Open Sans SemiBold", 0, 12)); // NOI18N
+        chooseImgBtn.setText("Select Image");
+        chooseImgBtn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        chooseImgBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chooseImgBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout parent_PanelLayout = new javax.swing.GroupLayout(parent_Panel);
         parent_Panel.setLayout(parent_PanelLayout);
         parent_PanelLayout.setHorizontalGroup(
@@ -256,10 +271,12 @@ public class DetailsForm extends javax.swing.JFrame {
                                     .addGap(95, 95, 95)
                                     .addGroup(parent_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jLabel7)
-                                        .addGroup(parent_PanelLayout.createSequentialGroup()
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, parent_PanelLayout.createSequentialGroup()
                                             .addComponent(_stateError)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(_program, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(parent_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(chooseImgBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(_program, 0, 161, Short.MAX_VALUE))
                                             .addGap(211, 211, 211))))))
                         .addGap(62, 62, 62))
                     .addGroup(parent_PanelLayout.createSequentialGroup()
@@ -320,7 +337,9 @@ public class DetailsForm extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(_phoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(parent_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(_phoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(chooseImgBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(_phoneError)
                 .addGap(5, 5, 5)
@@ -373,6 +392,29 @@ public class DetailsForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event__programActionPerformed
 
+    private byte[] selectedImageBytes = null;
+    private void chooseImgBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseImgBtnActionPerformed
+      JFileChooser fileChooser = new JFileChooser();
+     fileChooser.setDialogTitle("Select Id Card Photo");
+     
+      FileNameExtensionFilter filter = new FileNameExtensionFilter(
+        "Image Files", "jpg", "jpeg", "png");
+    fileChooser.setFileFilter(filter);
+    
+    int returnValue = fileChooser.showOpenDialog(null);
+    if (returnValue == JFileChooser.APPROVE_OPTION) {
+        File selectedFile = fileChooser.getSelectedFile();
+        try {
+            // Read the image file into a byte array
+            selectedImageBytes = Files.readAllBytes(selectedFile.toPath());
+       
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Error reading image file: " + ex.getMessage(), 
+                "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    }//GEN-LAST:event_chooseImgBtnActionPerformed
+
     private boolean validateForm() {
     boolean isValid = true;
     
@@ -417,12 +459,10 @@ public class DetailsForm extends javax.swing.JFrame {
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sys", "root", "prashant123?")) {
         
         //Prepare SQL INSERT statement
-        String sql = "INSERT INTO students(roll_number, name, program, birth_date, blood_group, address, mobile_number, email, print_status) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO students(roll_number, name, program, birth_date, blood_group, address, mobile_number, email, print_status,student_image) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         PreparedStatement pstmt = conn.prepareStatement(sql);
-        
-        //Set parameters for the prepared statement
                 
         Random _random = new Random();
         int randNum = _random.nextInt(200);
@@ -452,7 +492,11 @@ public class DetailsForm extends javax.swing.JFrame {
         pstmt.setString(8, _email.getText());           // email
         pstmt.setBoolean(9, false);                     // print_status
         
-        //Execute the insert
+         if (selectedImageBytes != null) {
+        pstmt.setBytes(10, selectedImageBytes); //image
+            } else {
+             pstmt.setNull(10, Types.BLOB);
+         }
         int rowsAffected = pstmt.executeUpdate();
         
         if (rowsAffected > 0) {
@@ -502,6 +546,7 @@ public class DetailsForm extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> _program;
     private javax.swing.JLabel _stateError;
     private javax.swing.JPanel background_Panel;
+    private javax.swing.JButton chooseImgBtn;
     private com.github.lgooddatepicker.components.DatePicker datePicker1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

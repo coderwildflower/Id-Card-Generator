@@ -5,6 +5,7 @@
 package com.mycompany.idcardgenerator;
 
 import  java.sql.*;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JOptionPane;
@@ -37,17 +38,17 @@ public class AdminPanelForm extends javax.swing.JFrame {
 
         studentTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Roll Number", "Name", "Program", "Birth Date", "Blood Group", "Address", "Mobile Number", "email", "print_status"
+                "Roll Number", "Name", "Program", "Birth Date", "Blood Group", "Address", "Mobile Number", "email", "print_status", "image"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                true, true, true, true, true, true, true, false, true
+                true, true, true, true, true, true, true, false, true, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -55,6 +56,9 @@ public class AdminPanelForm extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(studentTable);
+        if (studentTable.getColumnModel().getColumnCount() > 0) {
+            studentTable.getColumnModel().getColumn(9).setResizable(false);
+        }
 
         Print_btn.setBackground(new java.awt.Color(0, 153, 255));
         Print_btn.setFont(new java.awt.Font("Open Sans SemiBold", 1, 24)); // NOI18N
@@ -111,8 +115,16 @@ public class AdminPanelForm extends javax.swing.JFrame {
         studentData.put("address", (String) studentTable.getValueAt(selectedRow, 5));
         studentData.put("mobile", (String) studentTable.getValueAt(selectedRow, 6));
         studentData.put("email", (String) studentTable.getValueAt(selectedRow, 7));
-
-        // Open ID card form
+        
+        byte[] imageBytes = (byte[]) studentTable.getValueAt(selectedRow, 9);
+        
+        if (imageBytes != null) {
+              String imageBase64 = Base64.getEncoder().encodeToString(imageBytes);
+        studentData.put("image", imageBase64);
+        }
+        else  studentData.put("image","");
+      
+      
         IdCardForm _idCardForm = new IdCardForm(studentData);
         _idCardForm.setVisible(true);
     }//GEN-LAST:event_Print_btnActionPerformed
@@ -122,7 +134,7 @@ public class AdminPanelForm extends javax.swing.JFrame {
     model.setRowCount(0); // Clear existing data
     
     try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sys", "root", "prashant123?")) {
-        String sql = "SELECT roll_number, name, program, birth_date, blood_group,address,mobile_number, email,print_status FROM students";
+        String sql = "SELECT roll_number, name, program, birth_date, blood_group,address,mobile_number, email,print_status,student_image FROM students";
         PreparedStatement stmt = conn.prepareStatement(sql);
         ResultSet rs = stmt.executeQuery();
         
@@ -136,7 +148,8 @@ public class AdminPanelForm extends javax.swing.JFrame {
                 rs.getString("address"),
                 rs.getString("mobile_number"),
                 rs.getString("email"),
-                rs.getString("print_status")
+                rs.getString("print_status"),
+                rs.getBytes("student_image")
             });
         }
     } catch (SQLException ex) {
